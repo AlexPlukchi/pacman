@@ -1,11 +1,12 @@
 #ifndef Enemy_h
 #define Enemy_h
-
+#include "Enemy1.h"
 class Enemy : public Character
 {
     sf::Texture texture;
 public:
     Enemy();
+    Enemy& operator= (Enemy1 &enemy1);
     void init(int _xi, int _yi);
     void draw(sf::RenderWindow* window);
     void move_left();
@@ -21,8 +22,18 @@ Enemy::Enemy()
     r = X/2;
     count = 100;
     mov = 0;
-    texture.loadFromFile("res/ghost.jpeg", sf::IntRect(0, 0, 500, 500));
+    texture.loadFromFile(resourcePath()+"ghost.png", sf::IntRect(0, 0, 500, 500));
 }
+
+Enemy& Enemy::operator= (Enemy1 &enemy1)
+{
+    x = enemy1.get_x();
+    y = enemy1.get_y();
+    xi = enemy1.get_xi();
+    yi = enemy1.get_yi();
+    return *this;
+}
+
 void Enemy::init(int _xi, int _yi)
 {
     x = _xi*X + X/2;
@@ -53,7 +64,7 @@ void Enemy::move_left()
         count = 100;
         mov = 0;
     }
-
+    
 }
 void Enemy::move_down()
 {
@@ -68,7 +79,7 @@ void Enemy::move_down()
         count = 100;
         mov = 0;
     }
-
+    
 }
 void Enemy::move_right()
 {
@@ -83,7 +94,7 @@ void Enemy::move_right()
         count = 100;
         mov = 0;
     }
-
+    
 }
 void Enemy::move_up()
 {
@@ -98,7 +109,7 @@ void Enemy::move_up()
         count = 100;
         mov = 0;
     }
-
+    
 }
 void Enemy::move(int p_xi, int p_yi)
 {
@@ -140,7 +151,7 @@ void Enemy::move(int p_xi, int p_yi)
             case 4:
                 move_left();
                 break;
-
+                
             default:
                 break;
         }
