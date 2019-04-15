@@ -4,36 +4,34 @@
 class Character
 {
 protected:
-    int r;
-    int count;
-    int mov;
-    double vel;
-public:
     double x;
     double y;
-    int xi;
-    int yi;
+    int dir; // 1 - left, 2 - down, 3 - right, 4 - up
+    double ds;
+public:
     virtual void draw(sf::RenderWindow* window) = 0;
-    int get_xi();
-    int get_yi();
-    int get_x();
-    int get_y();
+    void go(int _dir);
 };
 
-int Character::get_xi()
+void Character::go(int _dir)
 {
-    return xi;
+    if(_dir != 0)
+    {
+        if(MAP[(int)floor((x + ((_dir - 2)%2)*(ds + X/2))/X)][(int)floor((y + ((3 - _dir)%2)*(ds + X/2))/X)] != 1 && abs(x/X - trunc(x/X) - 0.5) < ds/X && abs(y/X - trunc(y/X) - 0.5) < ds/X)
+        {
+            dir = _dir;
+            x += ((dir - 2)%2)*ds;
+            y += ((3 - dir)%2)*ds;
+        }
+        else if(dir != 0)
+        {
+            if(MAP[(int)floor((x + ((dir - 2)%2)*(ds + X/2))/X)][(int)floor((y + ((3 - dir)%2)*(ds + X/2))/X)] != 1)
+            {
+                x += ((dir - 2)%2)*ds;
+                y += ((3 - dir)%2)*ds;
+            }
+        }
+    }
 }
-int Character::get_yi()
-{
-    return yi;
-}
-int Character::get_x()
-{
-    return x;
-}
-int Character::get_y()
-{
-    return y;
-}
+
 #endif /* Character_h */
