@@ -28,7 +28,7 @@ Dots::Dots()
     {
         for(int j = 0; j < N; j++)
         {
-            map[i][j] = MAP[i][j];
+            map[i][j] = MAP0[i][j];
         }
     }
     buffer.loadFromFile(resourcePath() + "sound.wav");
