@@ -1,0 +1,55 @@
+//
+//  Map1.h
+//  Ermitage
+//
+//  Created by Mikhail Labendik on 09/04/2019.
+//  Copyright © 2019 Mikhail Labendik. All rights reserved.
+//
+
+#ifndef Map1_h
+#define Map1_h
+#include "Map_Generating.h"
+#include "Maps.h"
+
+class Map1: public Maps
+{
+    int map[N][N];
+public:
+    Map1();
+    void draw(sf::RenderWindow* window);
+};
+
+Map1::Map1()
+{
+    //generate_map();
+    for(int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < N; j++)
+        {
+            map[i][j] = MAP[i][j];
+        }
+       // generate_map();
+    }
+    
+}
+
+void Map1::draw(sf::RenderWindow* window)
+{
+    for(int i = 0; i < N; i++)
+    {
+        for(int j = 0; j < N; j++)
+        {
+            if(map[i][j] == 1)
+            {
+                sf::RectangleShape shape;
+                shape.setSize(sf::Vector2f(X - 1, X - 1));
+                shape.setFillColor(sf::Color::Green);
+                shape.setPosition(X*i, X*j);
+                window -> draw(shape);
+            }
+        }
+    }
+}
+
+
+#endif /* Map1_h */
