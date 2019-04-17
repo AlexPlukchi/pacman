@@ -1,86 +1,63 @@
 #ifndef Dots_h
 #define Dots_h
-#include "Map_Generating.h"
+
 class Dots
 {
-protected:
-    sf::SoundBuffer buffer;
-    sf::Sound sound;
     int map[N][N];
+    int score;
+    int win;
 public:
     Dots();
-    void draw(sf::RenderWindow* window);
-    void check(int i, int j);
-    void restart();
-    Dots& operator= (const Dots &dots)
-    {
-        for(int i = 0; i < N; i++)
-            for(int j = 0; j < N; j++)
-                map[i][j] = dots.map[i][j];
-        return *this;
-    }
+    bool draw(sf::RenderWindow* window);
+    std::string get_strscore();
+    void check(Pacman* p);
 };
 
 Dots::Dots()
 {
-    
     for(int i = 0; i < N; i++)
-    {
         for(int j = 0; j < N; j++)
-        {
-            map[i][j] = MAP0[i][j];
-        }
-    }
-    buffer.loadFromFile(resourcePath() + "sound.wav");
-    sound.setBuffer(buffer);
+            map[i][j] = MAP[i][j];
+    win = 0;
+    score = 0;
 }
 
-void Dots::draw(sf::RenderWindow* window)
+bool Dots::draw(sf::RenderWindow* window)
 {
+    win = 1;
     for(int i = 0; i < N; i++)
-    {
         for(int j = 0; j < N; j++)
         {
             if(map[i][j] == 0)
             {
+                win = 0;
                 sf::CircleShape shape;
-                shape.setRadius(4);
+                shape.setRadius(X/10);
                 shape.setFillColor(sf::Color::Yellow);
                 shape.setPosition(X*i + X/2, X*j + X/2);
-                shape.setOrigin(4, 4);
+                shape.setOrigin(shape.getRadius(), shape.getRadius());
                 window -> draw(shape);
             }
         }
-    }
+    if(win == 1)
+        return true;
+    return false;
 }
 
-void Dots::check(int i, int j)
+std::string Dots::get_strscore()
 {
-    if(map[i][j] == 0)
+    std::stringstream ss;
+    ss.str("");
+    ss << "Score - " << score;
+    return ss.str();
+}
+
+void Dots::check(Pacman* p)
+{
+    if(map[(int)floor(p->x/X)][(int)floor(p->y/X)] == 0)
     {
         ++score;
-        sound.play();
-        /*sf::SoundBuffer buffer;
-        buffer.loadFromFile("sound.wav");
-        sf::Sound sound;
-        sound.setBuffer(buffer);*/
-        sound.play();
-        if(score == 100)
-        {
-            fail = -1;
-        }
-        map[i][j] = 2;
-    }
-}
-
-void Dots::restart()
-{
-    for(int i = 0; i < N; i++)
-    {
-        for(int j = 0; j < N; j++)
-        {
-            map[i][j] = MAP[i][j];
-        }
+        map[(int)floor(p->x/X)][(int)floor(p->y/X)] = 2;
     }
 }
 
