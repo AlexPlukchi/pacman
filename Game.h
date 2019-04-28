@@ -30,10 +30,10 @@ Game::Game()
     enemy[1].init(17, 17);
     enemy[2].init(1, 17);
     enemy[3].init(17, 1);
-    
+
     dir = 0;
     time = 0;
-    
+
     if (!font.loadFromFile(resourcePath() + "res/arial.ttf"))
         return 1;
     text.setFont(font);
@@ -53,7 +53,7 @@ void Game::play()
     while(window.isOpen())
     {
         clock.restart();
-        
+
         sf::Event event;
         while(window.pollEvent(event))
         {
@@ -62,37 +62,37 @@ void Game::play()
                 case sf::Event::Closed:
                     window.close();
                     break;
-                    
+
                 case sf::Event::KeyPressed:
                     switch(event.key.code)
                     {
                         case sf::Keyboard::Left:
                             dir = 1;
                             break;
-                            
+
                         case sf::Keyboard::Down:
                             dir = 2;
                             break;
-                            
+
                         case sf::Keyboard::Right:
                             dir = 3;
                             break;
-                            
+
                         case sf::Keyboard::Up:
                             dir = 4;
                             break;
-                            
+
                         default:
                             break;
                     }
-                    
+
                 default:
                     break;
             }
         }
         pacman.go(dir);
         dots.check(&pacman);
-        
+
         window.clear();
         for(int i = 0; i < 4; i++)
         {
@@ -118,7 +118,7 @@ void Game::play()
         text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, X*N + 10);
         window.draw(text);
         window.display();
-        
+
         do
             time = clock.getElapsedTime().asSeconds();
         while(time < 0.002);
@@ -138,22 +138,22 @@ bool Game::end()
                 case sf::Event::Closed:
                     window.close();
                     return false;
-                    
+
                 case sf::Event::KeyPressed:
                     switch(event.key.code)
                 {
                     case sf::Keyboard::R: // Replay
                         window.close();
                         return true;
-                        
+
                     case sf::Keyboard::Q: // Quit
                         window.close();
                         return false;
-                        
+
                     default:
                         break;
                 }
-                    
+
                 default:
                     break;
             }
