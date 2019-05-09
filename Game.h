@@ -18,7 +18,7 @@ public:
     ~Game();
     void process(); // st = true - with start menu
     //bool start(); //menu before play;
-    void play();
+    bool play();
     bool end(); //menu after play
 };
 
@@ -27,13 +27,13 @@ Game::Game()
     n_of_e = 4;
     enemy = new Enemy[n_of_e];
     enemy[0].init(1, 1);
-    enemy[1].init(17, 17);
-    enemy[2].init(1, 17);
+    enemy[1].init(17, 16);
+    enemy[2].init(1, 16);
     enemy[3].init(17, 1);
-
+    
     dir = 0;
     time = 0;
-
+    
     if (!font.loadFromFile(resourcePath() + "res/arial.ttf"))
         return 1;
     text.setFont(font);
@@ -47,13 +47,13 @@ Game::~Game()
     delete[] enemy;
 }
 
-void Game::play()
+bool Game::play()
 {
     sf::RenderWindow window(sf::VideoMode(X*N, X*N + 100), "Packman");
     while(window.isOpen())
     {
         clock.restart();
-
+        
         sf::Event event;
         while(window.pollEvent(event))
         {
@@ -61,54 +61,54 @@ void Game::play()
             {
                 case sf::Event::Closed:
                     window.close();
-                    break;
-
+                    return false;
+                    
                 case sf::Event::KeyPressed:
                     switch(event.key.code)
                     {
                         case sf::Keyboard::Left:
                             dir = 1;
                             break;
-
+                            
                         case sf::Keyboard::Down:
                             dir = 2;
                             break;
-
+                            
                         case sf::Keyboard::Right:
                             dir = 3;
                             break;
-
+                            
                         case sf::Keyboard::Up:
                             dir = 4;
                             break;
-
+                            
                         default:
                             break;
                     }
-
+                    
                 default:
                     break;
             }
         }
         pacman.go(dir);
         dots.check(&pacman);
-
+        
         window.clear();
         for(int i = 0; i < 4; i++)
         {
-            enemy[i].walk();
+            enemy[i].walk(&pacman);
             if(enemy[i].check_fail(&pacman))
             {
                 text.setString("FAIL\n\nPress R to repeat, Q to close");
                 window.close();
-                return false;
+                return true;
             }
         }
         if(dots.draw(&window))
         {
             text.setString("WICTORY\n\nPress R to repeat, Q to close");
             window.close();
-            return false;
+            return true;
         }
         map.draw(&window);
         pacman.draw(&window);
@@ -118,11 +118,12 @@ void Game::play()
         text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, X*N + 10);
         window.draw(text);
         window.display();
-
+        
         do
             time = clock.getElapsedTime().asSeconds();
         while(time < 0.002);
     }
+    return true;
 }
 
 bool Game::end()
@@ -138,22 +139,22 @@ bool Game::end()
                 case sf::Event::Closed:
                     window.close();
                     return false;
-
+                    
                 case sf::Event::KeyPressed:
                     switch(event.key.code)
                 {
                     case sf::Keyboard::R: // Replay
                         window.close();
                         return true;
-
+                        
                     case sf::Keyboard::Q: // Quit
                         window.close();
                         return false;
-
+                        
                     default:
                         break;
                 }
-
+                    
                 default:
                     break;
             }

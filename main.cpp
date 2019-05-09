@@ -1,6 +1,5 @@
 #include <iostream>
 #include <stdlib.h>
-#include <time.h>
 #include <cmath>
 #include <sstream>
 
@@ -24,12 +23,10 @@ int main()
 {
     Game* game = new Game;
     if(menu())
-        game -> play();
-    while(game -> end())
-    {
-        delete game;
-        game = new Game;
-        game -> play();
-    }
+        while(game -> play() && game -> end())
+        {
+            delete game;
+            game = new Game;
+        }
     return 0;
 }

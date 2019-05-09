@@ -6,6 +6,8 @@ class Dots
     int map[N][N];
     int score;
     int win;
+    sf::SoundBuffer buffer;
+    sf::Sound sound;
 public:
     Dots();
     bool draw(sf::RenderWindow* window);
@@ -20,6 +22,8 @@ Dots::Dots()
             map[i][j] = MAP[i][j];
     win = 0;
     score = 0;
+    buffer.loadFromFile(resourcePath() + "res/sound.wav");
+    sound.setBuffer(buffer);
 }
 
 bool Dots::draw(sf::RenderWindow* window)
@@ -68,6 +72,9 @@ void Dots::check(Pacman* p)
     int j = (int)floor(p->y/X);
     if(map[i][j] == 0)
     {
+        sound.setPitch(2.0f);
+        sound.setVolume(50.f);
+        sound.play();
         ++score;
         map[i][j] = 2;
     }

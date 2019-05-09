@@ -24,6 +24,7 @@ int MAP_PRE[N][N] = {
 };
 
 int MAP[N][N];
+//int*** ways;
 
 //int MAP_PRE[N][N] = {
 //    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -74,19 +75,40 @@ class Map
     int map[N][N];
 public:
     Map();
+//    ~Map();
+//    void buildways();
     void draw_rect(sf::RenderWindow* window, int i, int j, int k);
     void draw(sf::RenderWindow* window);
 };
 
 Map::Map()
 {
+//    ways = new int**[N*N];
+//    for(int i = 0; i < N*N; i++)
+//        ways[i] = new int*[N*N];
+//    buildways();
+    
     for(int i = 0; i < N; i++)
-        for(int j = 0; j < N; j++)
-        {
+        for(int j = 0; j < N; j++) {
             MAP[i][j] = MAP_PRE[j][i];
             map[i][j] = MAP[i][j];
         }
 }
+
+//void Map::buildways()
+//{
+//
+//}
+//
+//Map::~Map()
+//{
+//    for(int i = 0; i < N*N; i++) {
+//        for(int j = 0; j < N*N; j++)
+//            delete[] ways[i][j];
+//        delete[] ways[i];
+//    }
+//    delete[] ways;
+//}
 
 void Map::draw_rect(sf::RenderWindow* window, int i, int j, int k)
 {
