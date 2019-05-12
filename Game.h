@@ -10,9 +10,10 @@ class Game
     int n_of_e; //number of enemies
     Enemy* enemy;
     sf::Clock clock;
-    double time;
+    sf::Clock global_clock;
     sf::Font font;
     sf::Text text;
+    sf::Text score;
 public:
     Game();
     ~Game();
@@ -24,22 +25,26 @@ public:
 
 Game::Game()
 {
-    n_of_e = 4;
-    enemy = new Enemy[n_of_e];
-    enemy[0].init(1, 1);
-    enemy[1].init(17, 16);
-    enemy[2].init(1, 16);
-    enemy[3].init(17, 1);
+    enemy = new Enemy[4];
+    enemy[0].init(8, 10, 1, 1);
+    enemy[1].init(9, 10, 1, 17);
+    enemy[2].init(10, 10, 17, 1);
+    enemy[3].init(8, 10, 17, 17);
     
     dir = 0;
-    time = 0;
     
     if (!font.loadFromFile(resourcePath() + "res/arial.ttf"))
         return 1;
     text.setFont(font);
     text.setCharacterSize(50);
-    text.setFillColor(sf::Color::Blue);
+    text.setFillColor(sf::Color::Green);
+    text.setStyle(sf::Text::Bold);
     text.setString("Press P to play, Q to quit");
+    score.setFont(font);
+    score.setCharacterSize(50);
+    score.setFillColor(sf::Color::Blue);
+    
+    global_clock.restart();
 }
 
 Game::~Game()
@@ -50,9 +55,12 @@ Game::~Game()
 bool Game::play()
 {
     sf::RenderWindow window(sf::VideoMode(X*N, X*N + 100), "Packman");
+    score.setString("Score");
+    score.setPosition(window.getSize().x/2 - score.getGlobalBounds().width/2, X*N + 10);
     while(window.isOpen())
     {
         clock.restart();
+        double time;
         
         sf::Event event;
         while(window.pollEvent(event))
@@ -94,7 +102,8 @@ bool Game::play()
         dots.check(&pacman);
         
         window.clear();
-        for(int i = 0; i < 4; i++)
+        n_of_e = (int)global_clock.getElapsedTime().asSeconds()/10.0 + 1;
+        for(int i = 0; i < n_of_e && i < 4; i++)
         {
             enemy[i].walk(&pacman);
             if(enemy[i].check_fail(&pacman))
@@ -114,11 +123,9 @@ bool Game::play()
         pacman.draw(&window);
         for(int i = 0; i < 4; i++)
             enemy[i].draw(&window);
-        text.setString(dots.get_strscore());
-        text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, X*N + 10);
-        window.draw(text);
+        score.setString(dots.get_strscore());
+        window.draw(score);
         window.display();
-        
         do
             time = clock.getElapsedTime().asSeconds();
         while(time < 0.002);
@@ -161,6 +168,12 @@ bool Game::end()
         }
         text.setPosition(window.getSize().x/2 - text.getGlobalBounds().width/2, window.getSize().y/2 - text.getGlobalBounds().height/2);
         window.clear();
+        dots.draw(&window);
+        map.draw(&window);
+        pacman.draw(&window);
+        for(int i = 0; i < 4; i++)
+            enemy[i].draw(&window);
+        window.draw(score);
         window.draw(text);
         window.display();
     }

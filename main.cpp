@@ -8,14 +8,14 @@
 
 #include "ResourcePath.hpp"
 
-#define N 19 //numbers os quads
-#define X 40 //lenght of side
+const int N = 19; //numbers os quads
+const int X = 40; //lenght of side
 
 #include "Map.h"
 #include "Character.h"
 #include "Pacman.h"
-#include "Dots.h"
 #include "Enemy.h"
+#include "Dots.h"
 #include "Game.h"
 #include "Menu.h"
 
@@ -28,5 +28,6 @@ int main()
             delete game;
             game = new Game;
         }
+    delete game;
     return 0;
 }

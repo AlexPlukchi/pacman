@@ -4,16 +4,20 @@
 class Dots
 {
     int map[N][N];
-    int score;
     int win;
-    sf::SoundBuffer buffer;
-    sf::Sound sound;
 public:
     Dots();
+    static int score;
     bool draw(sf::RenderWindow* window);
     std::string get_strscore();
     void check(Pacman* p);
+    sf::SoundBuffer buffer_chomp;
+    sf::Sound chomp;
+    sf::SoundBuffer buffer_eatfruit;
+    sf::Sound eatfruit;
 };
+
+int Dots::score = 0;
 
 Dots::Dots()
 {
@@ -21,9 +25,12 @@ Dots::Dots()
         for(int j = 0; j < N; j++)
             map[i][j] = MAP[i][j];
     win = 0;
-    score = 0;
-    buffer.loadFromFile(resourcePath() + "res/sound.wav");
-    sound.setBuffer(buffer);
+    
+    buffer_chomp.loadFromFile(resourcePath() + "res/chomp.wav");
+    chomp.setBuffer(buffer_chomp);
+    
+    buffer_eatfruit.loadFromFile(resourcePath() + "res/eatfruit.wav");
+    eatfruit.setBuffer(buffer_eatfruit);
 }
 
 bool Dots::draw(sf::RenderWindow* window)
@@ -70,17 +77,17 @@ void Dots::check(Pacman* p)
 {
     int i = (int)floor(p->x/X);
     int j = (int)floor(p->y/X);
-    if(map[i][j] == 0)
-    {
-        sound.setPitch(2.0f);
-        sound.setVolume(50.f);
-        sound.play();
+    if(map[i][j] == 0) {
+        if(chomp.getStatus() != sf::Music::Playing) {
+            chomp.play();
+        }
         ++score;
         map[i][j] = 2;
     }
-    if(map[i][j] == 3)
-    {
-        //dis = 3;
+    else if(map[i][j] == 3) {
+        chomp.stop();
+        eatfruit.play();
+        Enemy::make_fear();
         map[i][j] = 2;
     }
 }

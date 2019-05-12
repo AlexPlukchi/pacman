@@ -17,7 +17,7 @@ void Character::go(int _dir)
 {
     if(_dir != 0)
     {
-        if(MAP[(int)floor((x + ((_dir - 2)%2)*(ds + X/2))/X)][(int)floor((y + ((3 - _dir)%2)*(ds + X/2))/X)] != 1 && abs(x/X - trunc(x/X) - 0.5) < ds/X && abs(y/X - trunc(y/X) - 0.5) < ds/X)
+        if(MAP[(int)floor((x + ((_dir - 2)%2)*(ds + X/2))/X)][(int)floor((y + ((3 - _dir)%2)*(ds + X/2))/X)] != 1 && ((_dir%2 == 0 && abs(x/X - trunc(x/X) - 0.5) < ds/X) || (_dir%2 == 1 && abs(y/X - trunc(y/X) - 0.5) < ds/X)))
         {
             dir = _dir;
             x += ((dir - 2)%2)*ds;
