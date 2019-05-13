@@ -1,21 +1,23 @@
-#ifndef Dots_h
-#define Dots_h
+#include <iostream>
+#include <stdlib.h>
+#include <cmath>
+#include <sstream>
 
-class Dots
-{
-    int map[N][N];
-    int win;
-public:
-    Dots();
-    static int score;
-    bool draw(sf::RenderWindow* window);
-    std::string get_strscore();
-    void check(Pacman* p);
-    sf::SoundBuffer buffer_chomp;
-    sf::Sound chomp;
-    sf::SoundBuffer buffer_eatfruit;
-    sf::Sound eatfruit;
-};
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
+#include "ResourcePath.hpp"
+
+#define N 19 //numbers os quads
+#define X 40 //lenght of side
+
+extern int MAP_PRE[N][N];
+extern int MAP[N][N];
+
+#include "Character.hpp"
+#include "Pacman.hpp"
+#include "Enemy.hpp"
+#include "Dots.hpp"
 
 int Dots::score = 0;
 
@@ -91,5 +93,3 @@ void Dots::check(Pacman* p)
         map[i][j] = 2;
     }
 }
-
-#endif /* Dots_h */

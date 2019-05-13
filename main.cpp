@@ -8,15 +8,18 @@
 
 #include "ResourcePath.hpp"
 
-const int N = 19; //numbers os quads
-const int X = 40; //lenght of side
+#define N 19 //numbers os quads
+#define X 40 //lenght of side
 
-#include "Map.h"
-#include "Character.h"
-#include "Pacman.h"
-#include "Enemy.h"
-#include "Dots.h"
-#include "Game.h"
+extern int MAP_PRE[N][N];
+extern int MAP[N][N];
+
+#include "Map.hpp"
+#include "Character.hpp"
+#include "Pacman.hpp"
+#include "Enemy.hpp"
+#include "Dots.hpp"
+#include "Game.hpp"
 #include "Menu.h"
 
 int main()

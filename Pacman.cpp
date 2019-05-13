@@ -1,18 +1,21 @@
-#ifndef Pacman_h
-#define Pacman_h
+#include <iostream>
+#include <stdlib.h>
+#include <cmath>
+#include <sstream>
 
-class Enemy;
-class Dots;
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
-class Pacman : public Character
-{
-    sf::Texture texture[2];
-public:
-    Pacman();
-    void draw(sf::RenderWindow* window);
-    friend Enemy;
-    friend Dots;
-};
+#include "ResourcePath.hpp"
+
+#define N 19 //numbers os quads
+#define X 40 //lenght of side
+
+extern int MAP_PRE[N][N];
+extern int MAP[N][N];
+
+#include "Character.hpp"
+#include "Pacman.hpp"
 
 Pacman::Pacman()
 {
@@ -36,5 +39,3 @@ void Pacman::draw(sf::RenderWindow* window)
     shape.rotate(-90*((dir - 3)%2));
     window -> draw(shape);
 }
-
-#endif /* Pacman_h */

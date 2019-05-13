@@ -1,17 +1,27 @@
-#ifndef Character_h
-#define Character_h
+//
+//  Character.cpp
+//  Pacman 2.1
+//
+//  Created by Александр Плукчи on 13/05/2019.
+//  Copyright © 2019 Александр Плукчи. All rights reserved.
+//
+#include <iostream>
+#include <stdlib.h>
+#include <cmath>
+#include <sstream>
 
-class Character
-{
-protected:
-    double x;
-    double y;
-    int dir; // 1 - left, 2 - down, 3 - right, 4 - up
-    double ds;
-public:
-    virtual void draw(sf::RenderWindow* window) = 0;
-    void go(int _dir);
-};
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
+#include "ResourcePath.hpp"
+
+#define N 19 //numbers os quads
+#define X 40 //lenght of side
+
+extern int MAP_PRE[N][N];
+extern int MAP[N][N];
+
+#include "Character.hpp"
 
 void Character::go(int _dir)
 {
@@ -33,5 +43,3 @@ void Character::go(int _dir)
         }
     }
 }
-
-#endif /* Character_h */

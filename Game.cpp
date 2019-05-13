@@ -1,27 +1,32 @@
-#ifndef Game_h
-#define Game_h
+//
+//  Game.cpp
+//  Pacman 2.1
+//
+//  Created by Александр Плукчи on 13/05/2019.
+//  Copyright © 2019 Александр Плукчи. All rights reserved.
+//
+#include <iostream>
+#include <stdlib.h>
+#include <cmath>
+#include <sstream>
 
-class Game
-{
-    Map map;
-    Dots dots;
-    Pacman pacman;
-    int dir; // 1 - left, 2 - down, 3 - right, 4 - up
-    int n_of_e; //number of enemies
-    Enemy* enemy;
-    sf::Clock clock;
-    sf::Clock global_clock;
-    sf::Font font;
-    sf::Text text;
-    sf::Text score;
-public:
-    Game();
-    ~Game();
-    void process(); // st = true - with start menu
-    //bool start(); //menu before play;
-    bool play();
-    bool end(); //menu after play
-};
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
+
+#include "ResourcePath.hpp"
+
+#define N 19 //numbers os quads
+#define X 40 //lenght of side
+
+extern int MAP_PRE[N][N];
+extern int MAP[N][N];
+
+#include "Map.hpp"
+#include "Character.hpp"
+#include "Pacman.hpp"
+#include "Enemy.hpp"
+#include "Dots.hpp"
+#include "Game.hpp"
 
 Game::Game()
 {
@@ -32,6 +37,7 @@ Game::Game()
     enemy[3].init(8, 10, 17, 17);
     
     dir = 0;
+    Dots::score = 0;
     
     if (!font.loadFromFile(resourcePath() + "res/arial.ttf"))
         return 1;
@@ -73,26 +79,26 @@ bool Game::play()
                     
                 case sf::Event::KeyPressed:
                     switch(event.key.code)
-                    {
-                        case sf::Keyboard::Left:
-                            dir = 1;
-                            break;
-                            
-                        case sf::Keyboard::Down:
-                            dir = 2;
-                            break;
-                            
-                        case sf::Keyboard::Right:
-                            dir = 3;
-                            break;
-                            
-                        case sf::Keyboard::Up:
-                            dir = 4;
-                            break;
-                            
-                        default:
-                            break;
-                    }
+                {
+                    case sf::Keyboard::Left:
+                        dir = 1;
+                        break;
+                        
+                    case sf::Keyboard::Down:
+                        dir = 2;
+                        break;
+                        
+                    case sf::Keyboard::Right:
+                        dir = 3;
+                        break;
+                        
+                    case sf::Keyboard::Up:
+                        dir = 4;
+                        break;
+                        
+                    default:
+                        break;
+                }
                     
                 default:
                     break;
@@ -178,5 +184,3 @@ bool Game::end()
         window.display();
     }
 }
-
-#endif /* Game_h */
